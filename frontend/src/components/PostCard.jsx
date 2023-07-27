@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { Container, Grid, Typography } from "@mui/material";
-import UserCard from "./UserCard";
-import CommentCard from "./CommentCard";
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import { Container, Grid, Typography } from "@mui/material"
+import UserCard from "./UserCard"
+import CommentCard from "./CommentCard.jsx"
 
 function PostCard({ post }) {
     return (
@@ -36,21 +36,21 @@ function PostCard({ post }) {
                 </Card>
             </div>
         </Grid>
-    );
+    )
 }
 
 export default function PostCardContainer() {
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        console.log("This component will be mounted now.");
+        console.log("This component will be mounted now.")
 
         const fetchData = async () => {
             try {
-                const postsResponse = await axios.get("/api/posts");
-                const postsData = postsResponse.data;
+                const postsResponse = await axios.get("/api/posts")
+                const postsData = postsResponse.data
 
-                const postIds = postsData.map((post) => post.id);
+                const postIds = postsData.map((post) => post.id)
 
                 const [commentsResponse, usersResponse] = await Promise.all([
                     axios.get(
@@ -59,10 +59,10 @@ export default function PostCardContainer() {
                     axios.get(
                         `/api/datausers?userId=${postIds.join("&userId=")}`
                     ),
-                ]);
+                ])
 
-                const commentsData = commentsResponse.data;
-                const usersData = usersResponse.data;
+                const commentsData = commentsResponse.data
+                const usersData = usersResponse.data
 
                 const updatedPosts = postsData.map((post) => ({
                     ...post,
@@ -70,24 +70,24 @@ export default function PostCardContainer() {
                         (comment) => comment.postId === post.id
                     ),
                     user: usersData.find((user) => user.id === post.userId),
-                }));
+                }))
 
-                setPosts(updatedPosts);
+                setPosts(updatedPosts)
             } catch (error) {
-                console.error("Error fetching data:", error);
+                console.error("Error fetching data:", error)
             }
-        };
+        }
 
-        fetchData();
+        fetchData()
 
         return () => {
-            console.log("This component will be unmounted now.");
-        };
-    }, []);
+            console.log("This component will be unmounted now.")
+        }
+    }, [])
 
     const postsRender = posts.map((post) => (
         <PostCard key={post.id} post={post} />
-    ));
+    ))
 
     return (
         <Container fixed>
@@ -95,5 +95,5 @@ export default function PostCardContainer() {
                 {postsRender}
             </Grid>
         </Container>
-    );
+    )
 }
