@@ -29,5 +29,4 @@ Something's I learnt:
 2. How to write backend code
 3. Usage of bcrypt to hash the passwords of users
 4. Mongodb integration with the backend via mongoose and jwt authentication
-5. Storing the user data locally via cookies and usage of localstorage
-6. 
+5. Storing the user data locally via cookies and usage of localstorage.

@@ -1,4 +1,4 @@
-import PostCard from "../components/PostCard";
+import PostCard from "../components/PostCard"
 
 const PostScreen = () => {
     return (
@@ -8,7 +8,6 @@ const PostScreen = () => {
             </div>
             <PostCard />
         </>
-    );
-};
-
-export default PostScreen;
+    )
+}
+export default PostScreen
