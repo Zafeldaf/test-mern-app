@@ -1,0 +1,58 @@
+.ul {
+    list-style-type: none;
+}
+
+.li {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    margin: auto;
+    overflow: hidden;
+}
+
+#mainscreenheader {
+    margin-left: 35px;
+    max-height: 50px;
+}
+
+#navbaruser {
+    margin-right: 35px;
+    max-height: 50px;
+}
+
+#usershead {
+    float: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#createbtn {
+    float: right;
+    color: #f1f1f1;
+    text-decoration: none;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+    min-height: 40px;
+    min-width: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: darkgreen;
+}
+
+#deletebtn {
+    float: right;
+    color: #f1f1f1;
+    text-decoration: none;
+    border: none;
+    font-size: 20px;
+    border-radius: 10px;
+    min-height: 40px;
+    min-width: 100px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: darkred;
+}
