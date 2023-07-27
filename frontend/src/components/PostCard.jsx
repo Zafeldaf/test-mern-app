@@ -50,36 +50,29 @@ export default function PostCardContainer() {
                 const postsResponse = await axios.get("/api/posts");
                 const postsData = postsResponse.data;
 
-                const mappedPosts = postsData.map((post) => ({
+                const postIds = postsData.map((post) => post.id);
+
+                const [commentsResponse, usersResponse] = await Promise.all([
+                    axios.get(
+                        `/api/comments?postId=${postIds.join("&postId=")}`
+                    ),
+                    axios.get(
+                        `/api/datausers?userId=${postIds.join("&userId=")}`
+                    ),
+                ]);
+
+                const commentsData = commentsResponse.data;
+                const usersData = usersResponse.data;
+
+                const updatedPosts = postsData.map((post) => ({
                     ...post,
-                    comments: [],
-                    user: null,
+                    comments: commentsData.filter(
+                        (comment) => comment.postId === post.id
+                    ),
+                    user: usersData.find((user) => user.id === post.userId),
                 }));
 
-                setPosts(mappedPosts);
-
-                await Promise.all(
-                    mappedPosts.map(async (post, index) => {
-                        const [commentsResponse, userDataResponse] =
-                            await Promise.all([
-                                axios.get(`/api/comments?postId=${post.id}`),
-                                axios.get(`/api/datausers?id=${post.userId}`),
-                            ]);
-
-                        const postComments = commentsResponse.data;
-                        const userData = userDataResponse.data;
-
-                        setPosts((prevPosts) => {
-                            const updatedPosts = [...prevPosts];
-                            updatedPosts[index] = {
-                                ...updatedPosts[index],
-                                comments: postComments,
-                                user: userData,
-                            };
-                            return updatedPosts;
-                        });
-                    })
-                );
+                setPosts(updatedPosts);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

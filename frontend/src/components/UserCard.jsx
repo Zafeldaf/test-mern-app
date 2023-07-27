@@ -9,7 +9,7 @@ const UserCard = ({ user }) => {
             <CardContent>
                 <Typography>
                     <strong>User ID: </strong>
-                    {user.userId}
+                    {user.id}
                 </Typography>
                 <Typography>
                     <strong>User's Name: </strong>
