@@ -1,4 +1,4 @@
-import PostAccordion from "../components/PostAccordion.jsx"
+import PostAccordion from "../components/PostAccordion.jsx";
 
 const PostScreen = () => {
     return (
@@ -8,6 +8,6 @@ const PostScreen = () => {
             </div>
             <PostAccordion />
         </>
-    )
-}
-export default PostScreen
+    );
+};
+export default PostScreen;

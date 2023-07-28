@@ -32,7 +32,7 @@ const UserScreen = () => {
                 <h3 id="usershead">Users</h3>
                 <ul className="ul">
                     <li>
-                        <Link to="/data/users/create" className="li">
+                        <Link to="/users/create" className="li">
                             <button id="createbtn">Create</button>
                         </Link>
                     </li>
