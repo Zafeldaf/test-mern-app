@@ -1,4 +1,4 @@
-import PostCard from "../components/PostCard"
+import PostAccordion from "../components/PostAccordion.jsx"
 
 const PostScreen = () => {
     return (
@@ -6,7 +6,7 @@ const PostScreen = () => {
             <div className="container">
                 <h3 id="usershead">Posts</h3>
             </div>
-            <PostCard />
+            <PostAccordion />
         </>
     )
 }

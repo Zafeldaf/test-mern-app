@@ -12,6 +12,21 @@
     overflow: hidden;
 }
 
+.pagebtns {
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    font-size: 15px;
+    border-radius: 10px;
+    min-height: 35px;
+    min-width: 120px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    background-color: #000;
+}
+
+
 #mainscreenheader {
     margin-left: 35px;
     max-height: 50px;
