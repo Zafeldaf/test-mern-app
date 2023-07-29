@@ -11,6 +11,7 @@ import {
     Grid,
     InputLabel,
     MenuItem,
+    Pagination,
     Select,
     TextField,
     Typography,
@@ -25,7 +26,7 @@ const PostsAccordion = ({ post, user, comments }) => {
         setIsLoading(true);
         axios.get(`/api/comments`).then((response) => {
             const postComments = response.data.filter(
-                (comment) => comment.postId === post.id
+                (comment) => comment.postId === post.id,
             );
             comments.set(post.id, postComments);
             setIsLoading(false);
@@ -103,84 +104,81 @@ const PostAccordion = () => {
     const [searchKeyword, setSearchKeyword] = useState("");
     const [filterType, setFilterType] = useState("");
     const [filterValue, setFilterValue] = useState("");
+    const [filteredPosts, setFilteredPosts] = useState([]);
 
     useEffect(() => {
-        const startIndex = (currentPage - 1) * postsPerPage;
-        const endIndex = startIndex + postsPerPage;
-
         axios.get("/api/posts").then((response) => {
             setTotalPosts(response.data.length);
-            setPosts(response.data.slice(startIndex, endIndex));
+            setPosts(response.data);
         });
 
         axios.get("/api/datausers").then((response) => {
             setUsers(response.data);
         });
-    }, [currentPage, postsPerPage]);
 
-    useEffect(() => {
         axios.get(`/api/comments`).then((response) => {
             const allComments = response.data;
             const postCommentsMap = new Map();
-            posts.forEach((post) => {
-                const postComments = allComments.filter(
-                    (comment) => comment.postId === post.id
-                );
-                postCommentsMap.set(post.id, postComments);
+            response.data.forEach((comment) => {
+                if (!postCommentsMap.has(comment.postId)) {
+                    postCommentsMap.set(comment.postId, []);
+                }
+                postCommentsMap.get(comment.postId).push(comment);
             });
             setComments(postCommentsMap);
         });
-    }, [posts]);
+    }, []);
 
-    const handlePostsPerPageChange = (event) => {
-        setPostsPerPage(event.target.value);
-        setCurrentPage(1);
+    useEffect(() => {
+        // Filter and search posts based on the selected filter type, value, and search keyword
+        const filtered = posts.filter((post) => {
+            const user = users.find((u) => u.id === post.userId);
+            const searchString = `${user?.id} ${user?.name} ${user?.email} ${post.id} ${post.title} ${post.body}`;
+            return (
+                searchString
+                    .toLowerCase()
+                    .includes(filterValue.toLowerCase()) &&
+                searchString
+                    .toLowerCase()
+                    .includes(searchKeyword.toLowerCase()) &&
+                (filterType === "" ||
+                    (filterType === "datausers" && user) ||
+                    (filterType === "posts" && post) ||
+                    (filterType === "userId" &&
+                        post.userId
+                            .toString()
+                            .includes(filterValue.toLowerCase())) ||
+                    (filterType === "username" &&
+                        user?.username
+                            .toLowerCase()
+                            .includes(filterValue.toLowerCase())) ||
+                    (filterType === "usersName" &&
+                        user?.name
+                            .toLowerCase()
+                            .includes(filterValue.toLowerCase())) ||
+                    (filterType === "usersEmail" &&
+                        user?.email
+                            .toLowerCase()
+                            .includes(filterValue.toLowerCase())) ||
+                    (filterType === "postsId" &&
+                        post.id
+                            .toString()
+                            .includes(filterValue.toLowerCase())) ||
+                    (filterType === "postTitle" &&
+                        post.title
+                            .toLowerCase()
+                            .includes(filterValue.toLowerCase())))
+            );
+        });
+
+        // Set the filtered posts
+        setFilteredPosts(filtered);
+        setCurrentPage(1); // Reset to the first page when filtering or searching
+    }, [posts, users, filterType, filterValue, searchKeyword]);
+
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage(newPage);
     };
-
-    const handleSearchKeywordChange = (event) => {
-        setSearchKeyword(event.target.value);
-        setCurrentPage(1);
-    };
-
-    const handleFilterTypeChange = (event) => {
-        setFilterType(event.target.value);
-        setFilterValue("");
-        setCurrentPage(1);
-    };
-
-    const handleFilterValueChange = (event) => {
-        setFilterValue(event.target.value);
-        setCurrentPage(1);
-    };
-
-    const getUserForPost = (postId) => {
-        const post = posts.find((p) => p.id === postId);
-        return users.find((user) => user.id === post.userId);
-    };
-
-    const filteredPosts = posts.filter((post) => {
-        if (filterType === "datausers") {
-            const user = getUserForPost(post.id);
-            if (!user) return false;
-
-            const searchString = `${user.id} ${user.name} ${user.email}`;
-            return searchString
-                .toLowerCase()
-                .includes(filterValue.toLowerCase());
-        } else if (filterType === "posts") {
-            const searchString = `${post.id} ${post.title} ${post.body}`;
-            return searchString
-                .toLowerCase()
-                .includes(filterValue.toLowerCase());
-        } else {
-            return true;
-        }
-    });
-
-    const searchedPosts = filteredPosts.filter((post) => {
-        const searchString = `${post.id} ${post.title} ${post.body}`;
-        return searchString.toLowerCase().includes(searchKeyword.toLowerCase());
-    });
 
     return (
         <div>
@@ -189,17 +187,20 @@ const PostAccordion = () => {
                     label="Search"
                     variant="outlined"
                     value={searchKeyword}
-                    onChange={handleSearchKeywordChange}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
                 />
-                <FormControl>
+                <FormControl id="filterform">
                     <InputLabel>Filter Type</InputLabel>
                     <Select
                         value={filterType}
-                        onChange={handleFilterTypeChange}
+                        onChange={(e) => setFilterType(e.target.value)}
                     >
                         <MenuItem value="">None</MenuItem>
-                        <MenuItem value="datausers">Data Users</MenuItem>
-                        <MenuItem value="posts">Posts</MenuItem>
+                        <MenuItem value="userId">User ID</MenuItem>
+                        <MenuItem value="usersName">User's Name</MenuItem>
+                        <MenuItem value="usersEmail">User's Email</MenuItem>
+                        {/*<MenuItem value="postsId">Post ID</MenuItem>*/}
+                        <MenuItem value="postTitle">Post Title</MenuItem>
                     </Select>
                 </FormControl>
                 {filterType && (
@@ -207,54 +208,52 @@ const PostAccordion = () => {
                         label="Filter Value"
                         variant="outlined"
                         value={filterValue}
-                        onChange={handleFilterValueChange}
+                        onChange={(e) => setFilterValue(e.target.value)}
                     />
                 )}
             </div>
 
             <Grid container spacing={2}>
-                {searchedPosts.map((post) => {
-                    const user = getUserForPost(post.id);
-                    return (
-                        <Grid key={post.id} item xs={12} sm={6}>
-                            <PostsAccordion
-                                post={post}
-                                user={user}
-                                comments={comments}
-                            />
-                        </Grid>
-                    );
-                })}
+                {filteredPosts
+                    .slice(
+                        (currentPage - 1) * postsPerPage,
+                        currentPage * postsPerPage,
+                    )
+                    .map((post) => {
+                        const user = users.find((u) => u.id === post.userId);
+                        return (
+                            <Grid key={post.id} item xs={12} sm={6}>
+                                <PostsAccordion
+                                    post={post}
+                                    user={user}
+                                    comments={comments}
+                                />
+                            </Grid>
+                        );
+                    })}
             </Grid>
 
-            <div>
-                <button
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
+            <div className="maincontain">
+                <Pagination
+                    count={Math.ceil(filteredPosts.length / postsPerPage)}
+                    page={currentPage}
+                    onChange={handleChangePage}
+                    color="primary"
                     className="pagebtns"
-                >
-                    Previous Page
-                </button>
-                <button
-                    disabled={
-                        posts.length < postsPerPage ||
-                        currentPage * postsPerPage >= totalPosts
-                    }
-                    onClick={() => setCurrentPage((prevPage) => prevPage + 1)}
-                    className="pagebtns"
-                >
-                    Next Page
-                </button>
-                <FormControl>
-                    <InputLabel>Posts Per Page</InputLabel>
+                />
+                <FormControl className="formcontrol">
+                    <InputLabel className="inputformcontrol">
+                        Posts Per Page
+                    </InputLabel>
                     <Select
                         value={postsPerPage}
-                        onChange={handlePostsPerPageChange}
+                        onChange={(e) => setPostsPerPage(e.target.value)}
                     >
                         <MenuItem value={5}>5</MenuItem>
                         <MenuItem value={10}>10</MenuItem>
                         <MenuItem value={20}>20</MenuItem>
                         <MenuItem value={50}>50</MenuItem>
+                        <MenuItem value={100}>100</MenuItem>
                     </Select>
                 </FormControl>
             </div>
