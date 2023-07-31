@@ -1,6 +1,4 @@
-import { Post } from "../models/postsModel.js";
-import { Comment } from "../models/postsModel.js";
-import { DataUser } from "../models/postsModel.js";
+import { Comment, DataUser, Post } from "../models/postsModel.js";
 
 const getPosts = async (req, res) => {
     try {
@@ -16,7 +14,7 @@ const getPosts = async (req, res) => {
         // Map comments and users to their respective posts
         posts.forEach((post) => {
             post.comments = comments.filter(
-                (comment) => comment.postId === post._id
+                (comment) => comment.postId === post._id,
             );
             if (post.userId) {
                 post.user = users.find((user) => user.userId === post.userId);
@@ -29,4 +27,19 @@ const getPosts = async (req, res) => {
     }
 };
 
-export { getPosts };
+const createPost = async (req, res) => {
+    const { title, body, userId } = req.body;
+
+    try {
+        const newPost = await Post.create({
+            title,
+            body,
+            userId,
+        });
+        res.status(201).json(newPost);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error" });
+    }
+};
+
+export { getPosts, createPost };

@@ -1,10 +1,9 @@
 import express from "express";
-const router = express.Router();
 import {
     authUser,
-    registerUser,
-    logoutUser,
     getUserProfile,
+    logoutUser,
+    registerUser,
     updateUserProfile,
 } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
@@ -13,8 +12,10 @@ import {
     deleteUser,
     getDataUsers,
 } from "../controllers/dataUserController.js";
-import { getPosts } from "../controllers/postController.js";
+import { createPost, getPosts } from "../controllers/postController.js";
 import { getComments } from "../controllers/commentsController.js";
+
+const router = express.Router();
 
 router.post("/", registerUser);
 router.post("/auth", authUser);
@@ -30,6 +31,7 @@ router.post("/datausers", createUser);
 router.delete("/datausers/:id", deleteUser);
 
 router.get("/posts", getPosts);
+router.post("/posts", createPost);
 router.get("/datausers", getDataUsers);
 router.get("/comments", getComments);
 
