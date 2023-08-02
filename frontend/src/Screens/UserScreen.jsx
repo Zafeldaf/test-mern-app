@@ -16,8 +16,8 @@ const UserScreen = () => {
         (async () => {
             const responses = await Promise.all(
                 selectedRowsIds.map((id) =>
-                    axios.delete(`/api/datausers/${id}`)
-                )
+                    axios.delete(`/api/datausers/${id}`),
+                ),
             );
             toast.success("Deleted Successfully");
             setTimeout(() => {
@@ -29,7 +29,7 @@ const UserScreen = () => {
     return (
         <>
             <div className="container">
-                <h3 id="usershead">Users</h3>
+                <h3 className="usershead">Users</h3>
                 <ul className="ul">
                     <li>
                         <Link to="/users/create" className="li">

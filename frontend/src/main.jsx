@@ -17,9 +17,10 @@ import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
 import UserScreen from "./Screens/UserScreen.jsx";
 import PostScreen from "./Screens/PostScreen.jsx";
-import AlbumsScreen from "./Screens/AlbumsScreen.jsx";
+import PhotoScreen from "./Screens/PhotoScreen.jsx";
 import CreateUser from "./components/CreateUser.jsx";
 import CreatePost from "./components/CreatePost.jsx";
+import UploadPhoto from "./components/UploadPhoto.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,13 +39,16 @@ const router = createBrowserRouter(
                 <Route path="/posts" element={<PostScreen />} />
             </Route>
             <Route path="" element={<PrivateRoute />}>
-                <Route path="/albums" element={<AlbumsScreen />} />
+                <Route path="/photos" element={<PhotoScreen />} />
             </Route>
             <Route path="" element={<PrivateRoute />}>
                 <Route path="/users/create" element={<CreateUser />} />
             </Route>
             <Route path="" element={<PrivateRoute />}>
                 <Route path="/posts/create" element={<CreatePost />} />
+            </Route>
+            <Route path="" element={<PrivateRoute />}>
+                <Route path="/photos/upload" element={<UploadPhoto />} />
             </Route>
         </Route>,
     ),

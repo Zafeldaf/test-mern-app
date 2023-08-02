@@ -1,8 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
 import connectDB from "./config/db.js";
-import router from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 const port = process.env.PORT || 6000;
@@ -14,7 +15,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(fileUpload({}));
 
-app.use("/api", router);
+app.use("/api", userRoutes);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

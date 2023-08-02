@@ -1,6 +1,6 @@
-import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
+import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { useLogoutMutation } from "../slices/usersApiSlice";
@@ -56,9 +56,9 @@ const Header = () => {
                                             Posts
                                         </NavDropdown.Item>
                                     </LinkContainer>
-                                    <LinkContainer to="/albums">
+                                    <LinkContainer to="/photos">
                                         <NavDropdown.Item>
-                                            Albums
+                                            Photos
                                         </NavDropdown.Item>
                                     </LinkContainer>
                                     <NavDropdown.Item onClick={logoutHandler}>
