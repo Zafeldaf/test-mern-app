@@ -36,7 +36,7 @@ const RegisterScreen = () => {
                 const res = await register({ name, email, password }).unwrap();
                 dispatch(setCredentials({ ...res }));
                 navigate("/");
-            } catch (error) {
+            } catch (err) {
                 toast.error(err?.data?.message);
             }
         }

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import axios from "axios";
 import FormContainer from "./FormContainer.jsx";
+import { Link } from "react-router-dom";
 
 const CreatePost = () => {
     const [formData, setFormData] = useState({
@@ -57,9 +58,11 @@ const CreatePost = () => {
                         onChange={handleChange}
                     />
                 </Form.Group>
-                <Button type="submit" variant="primary">
-                    Create Post
-                </Button>
+                <Link to="/posts">
+                    <Button type="submit" variant="primary">
+                        Create Post
+                    </Button>
+                </Link>
             </Form>
         </FormContainer>
     );

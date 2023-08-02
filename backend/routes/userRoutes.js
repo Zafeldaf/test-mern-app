@@ -17,12 +17,12 @@ import { getComments } from "../controllers/commentsController.js";
 
 const router = express.Router();
 
-router.post("/", registerUser);
-router.post("/auth", authUser);
-router.post("/logout", logoutUser);
+router.post("/users/", registerUser);
+router.post("/users/auth", authUser);
+router.post("/users/logout", logoutUser);
 
 router
-    .route("/profile")
+    .route("/users/profile")
     .get(protect, getUserProfile)
     .put(protect, updateUserProfile);
 
