@@ -56,9 +56,9 @@ const Header = () => {
                                             Posts
                                         </NavDropdown.Item>
                                     </LinkContainer>
-                                    <LinkContainer to="/photos">
+                                    <LinkContainer to="/albums">
                                         <NavDropdown.Item>
-                                            Photos
+                                            Albums
                                         </NavDropdown.Item>
                                     </LinkContainer>
                                     <NavDropdown.Item onClick={logoutHandler}>

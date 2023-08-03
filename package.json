@@ -24,6 +24,8 @@
     "express-async-handler": "^1.2.0",
     "express-fileupload": "^1.4.0",
     "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.1"
+    "mongoose": "^7.4.1",
+    "uuid": "^9.0.0",
+    "uuidv4": "^6.2.13"
   }
 }

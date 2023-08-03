@@ -1,15 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const PhotoScreen = () => {
+const AlbumScreen = () => {
     return (
         <div className="container">
-            <h1 className="usershead">Photos</h1>
-            <Link to="/photos/upload" className="li">
+            <h1 className="usershead">Albums</h1>
+            <Link to="/albums/uploadphoto" className="li">
                 <button id="createbtn">Upload</button>
             </Link>
         </div>
     );
 };
 
-export default PhotoScreen;
+export default AlbumScreen;
