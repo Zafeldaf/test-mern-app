@@ -78,8 +78,6 @@ const verifyUser = asyncHandler(async (req, res) => {
     // Find the user with the provided verification token
     const user = await User.findOne({ verificationToken: token });
 
-    console.log("User and token: ", user, token);
-
     if (!user) {
         return res
             .status(401)
@@ -92,6 +90,73 @@ const verifyUser = asyncHandler(async (req, res) => {
     await user.save();
 
     res.status(200).json({ message: "Email verified successfully" });
+});
+
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res
+            .status(404)
+            .json({ error: "User with this email not found" });
+    }
+
+    // Generate a verification token for password reset
+    const resetToken = uuidv4();
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpires = Date.now() + 3600000; // 1 hour validity
+
+    await user.save();
+
+    const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+
+    const emailSubject = "Password Reset";
+    const emailText = `Click the link to reset your password: ${resetLink}`;
+    const emailHtml = `<p>Click the link to reset your password: <a href="${resetLink}">${resetLink}</a></p>`;
+
+    // Send the password reset email
+    const emailSent = await sendEmail(
+        email,
+        emailSubject,
+        emailText,
+        emailHtml,
+    );
+
+    if (!emailSent) {
+        return res
+            .status(500)
+            .json({ error: "Failed to send password reset email" });
+    }
+
+    res.status(200).json({ message: "Password reset email sent successfully" });
+});
+
+const resetPassword = asyncHandler(async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+        return res
+            .status(404)
+            .json({ error: "Invalid or expired token for password reset" });
+    }
+
+    user.password = password;
+
+    // Clear the reset password fields
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful" });
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -141,6 +206,8 @@ export {
     authUser,
     registerUser,
     verifyUser,
+    forgotPassword,
+    resetPassword,
     logoutUser,
     getUserProfile,
     updateUserProfile,

@@ -1,9 +1,11 @@
 import express from "express";
 import {
     authUser,
+    forgotPassword,
     getUserProfile,
     logoutUser,
     registerUser,
+    resetPassword,
     updateUserProfile,
     verifyUser,
 } from "../controllers/userController.js";
@@ -40,5 +42,8 @@ router.get("/comments", getComments);
 router.post("/upload", uploadPhoto);
 
 router.get("/verify/:token", verifyUser);
+
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
 
 export default router;

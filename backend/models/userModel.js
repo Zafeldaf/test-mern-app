@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
     {
         name: {
             type: String,
@@ -10,6 +10,7 @@ const userSchema = mongoose.Schema(
         email: {
             type: String,
             required: true,
+            unique: true,
         },
         password: {
             type: String,
@@ -17,12 +18,12 @@ const userSchema = mongoose.Schema(
         },
         isVerified: {
             type: Boolean,
+            required: true,
             default: false,
         },
-        verificationToken: {
-            type: String,
-            default: null,
-        },
+        verificationToken: String,
+        resetPasswordToken: String,
+        resetPasswordExpires: Date,
     },
     {
         timestamps: true,

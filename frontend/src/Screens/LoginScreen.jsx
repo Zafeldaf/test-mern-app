@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import { useLoginMutation } from "../slices/usersApiSlice";
@@ -32,8 +32,13 @@ const LoginScreen = () => {
             dispatch(setCredentials({ ...res }));
             navigate("/");
         } catch (err) {
-            toast.error(err?.data?.message || err.error);
+            toast.error("Wrong Email or Password");
+            console.log(err?.data?.message || err.error);
         }
+    };
+
+    const handleForgotPassword = () => {
+        navigate("/forgot-password");
     };
 
     return (
@@ -66,6 +71,9 @@ const LoginScreen = () => {
                 <Row className="py-3">
                     <Col>
                         New Customer? <Link to="/register">Register</Link>
+                        {/*<Col>*/} Forgot Password?{" "}
+                        <Link to="/forgot-password"> Reset Here</Link>
+                        {/*</Col>*/}
                     </Col>
                 </Row>
             </Form>

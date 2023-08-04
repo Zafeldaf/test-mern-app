@@ -22,6 +22,8 @@ import CreateUser from "./components/CreateUser.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import UploadPhoto from "./components/UploadPhoto.jsx";
 import EmailVerification from "./Screens/EmailVerification.jsx";
+import ForgotPasswordScreen from "./Screens/ForgotPasswordScreen.jsx";
+import ResetPasswordScreen from "./Screens/ResetPasswordScreen.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +32,11 @@ const router = createBrowserRouter(
             <Route path="/verify/:token" element={<EmailVerification />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
+            <Route path="/forgot-password" element={<ForgotPasswordScreen />} />
+            <Route
+                path="/reset-password/:token"
+                element={<ResetPasswordScreen />}
+            />
             {/* Private Routes */}
             <Route path="" element={<PrivateRoute />}>
                 <Route path="/profile" element={<ProfileScreen />} />
