@@ -15,10 +15,18 @@ const userSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        isVerified: {
+            type: Boolean,
+            default: false,
+        },
+        verificationToken: {
+            type: String,
+            default: null,
+        },
     },
     {
         timestamps: true,
-    }
+    },
 );
 
 userSchema.pre("save", async function (next) {

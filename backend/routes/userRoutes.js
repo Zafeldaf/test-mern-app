@@ -5,6 +5,7 @@ import {
     logoutUser,
     registerUser,
     updateUserProfile,
+    verifyUser,
 } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import {
@@ -37,5 +38,7 @@ router.get("/datausers", getDataUsers);
 router.get("/comments", getComments);
 
 router.post("/upload", uploadPhoto);
+
+router.get("/verify/:token", verifyUser);
 
 export default router;

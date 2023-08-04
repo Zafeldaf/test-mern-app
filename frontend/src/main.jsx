@@ -21,11 +21,13 @@ import AlbumScreen from "./Screens/AlbumScreen.jsx";
 import CreateUser from "./components/CreateUser.jsx";
 import CreatePost from "./components/CreatePost.jsx";
 import UploadPhoto from "./components/UploadPhoto.jsx";
+import EmailVerification from "./Screens/EmailVerification.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<App />}>
             <Route index={true} path="/" element={<HomeScreen />} />
+            <Route path="/verify/:token" element={<EmailVerification />} />
             <Route path="/login" element={<LoginScreen />} />
             <Route path="/register" element={<RegisterScreen />} />
             {/* Private Routes */}
