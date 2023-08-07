@@ -1,32 +1,55 @@
 # Project #1: Full Stack CRUD REST API
 
-This is the first full project in my journey of learning JavaScript and by now I have an intermediate grasp on React,
-Express and Node.js and some of the packages and libraries I used with these frameworks. I have done other 2 other
-projects, but they weren't complete in the sense fullstack applications and my usage of the JavaScript wasn't optimal,
-and so I decided not to push them here.
+This project contains (but is not limited to):
 
-## React
+- Backend API with Express & MongoDB
+- Routes for auth, logout, register, profile, update profile
+- JWT authentication stored in HTTP-only cookie
+- Protected routes and endpoints
+- Custom middleware to check JSON web token and store in cookie
+- Custom error middleware
+- React frontend to register, login, logout, view profile, and update profile
+- React Bootstrap UI library
+- React Toastify notifications
 
-This is what I learnt in react when I started it.
+## Usage
 
-1. React Basics
-2. Props, Components
-3. Use State, Use Effect
-4. React Libraries, MUI Library
-5. Vite
-6. Axios, API Calling
-7. CRUD Creation
+Create a MongoDB database and obtain your MongoDB URI - MongoDB Atlas
 
-## Express & Node.js
+### Env Variables
 
-This is what I learnt in Express and Node.js when I started. I didn't learn the basics by reading the documentation or
-watching a crash course on them, but rather by creating a project. The project was creating basic user authentication,
-which included the user signing up, signing in, signing out and changing his profile.
+```dotenv
+# Express Config
+NODE_ENV=development
+PORT=6000
+MONGO_URI="your-mongo-uri"
 
-Something's I learnt:
+#JWT
+JWT_SECRET=abc123
+REFRESH_TOKEN_SECRET=123abc
 
-1. Basics of Express and Node.js
-2. How to write backend code
-3. Usage of bcrypt to hash the passwords of users
-4. Mongodb integration with the backend via mongoose and jwt authentication
-5. Storing the user data locally via cookies and usage of localstorage.
+# AWS
+AWS_ACCESS_KEY_ID="your-access-key-id"
+AWS_SECRET_ACCESS_KEY="your-secret-access-id"
+AWS_REGION="your-region"
+```
+
+The JWT secret can be changed to whatever you want.
+
+### Install Dependencies (frontend & backend)
+
+```
+npm install
+cd frontend
+npm install
+```
+
+### Run
+
+```
+# Run frontend (:3000) & backend (:6000)
+npm run dev
+
+# Run backend only
+npm run server
+```
