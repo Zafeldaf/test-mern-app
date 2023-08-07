@@ -37,12 +37,12 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("User already exists");
     }
 
-    const verificationToken = uuidv4(); // Generate a verification token using uuidv4
+    const verificationToken = uuidv4();
     const user = await User.create({
         name,
         email,
         password,
-        verificationToken, // Save the verification token in the user record
+        verificationToken,
     });
 
     const verificationLink = `http://localhost:3000/verify/${verificationToken}`;
@@ -149,8 +149,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     }
 
     user.password = password;
-
-    // Clear the reset password fields
+    
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 

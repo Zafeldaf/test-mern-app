@@ -36,7 +36,7 @@ const ForgotPasswordScreen = () => {
                     </Form.Group>
 
                     <Button type="submit" variant="primary" className="mt-3">
-                        Reset Password
+                        Forgot Password
                     </Button>
                 </Form>
             </FormContainer>
