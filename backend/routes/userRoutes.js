@@ -10,7 +10,11 @@ import {
     verifyUser,
 } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
-import { deleteUser, getDataUsers } from "../controllers/dataUserController.js";
+import {
+    createUser,
+    deleteUser,
+    getDataUsers,
+} from "../controllers/dataUserController.js";
 import { createPost, getPosts } from "../controllers/postController.js";
 import { getComments } from "../controllers/commentsController.js";
 import { uploadPhoto } from "../controllers/uploadImageController.js";
@@ -26,19 +30,20 @@ router
     .get(protect, getUserProfile)
     .put(protect, updateUserProfile);
 
-router.route("/datausers").get(protect, getDataUsers).post(protect, createPost);
-router.route("/datausers/:id").delete(protect, deleteUser);
+router.get("/datausers", getDataUsers);
+router.post("/datausers", createUser);
+router.delete("/datausers/:id", deleteUser);
 
-router.route("/posts").get(protect, getPosts).post(protect, createPost);
-router.route("/datausers").get(protect, getDataUsers);
-router.route("/comments").get(protect, getComments);
+router.get("/posts", getPosts);
+router.post("/posts", createPost);
+router.get("/datausers", getDataUsers);
+router.get("/comments", getComments);
 
-router.route("/upload").post(protect, uploadPhoto);
+router.post("/upload", uploadPhoto);
 
-router.route("/verify/:token").get(verifyUser);
+router.get("/verify/:token", verifyUser);
 
-router.route("/forgot-password").post(forgotPassword);
-
-router.route("/reset-password/:token").get(resetPassword);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
 
 export default router;

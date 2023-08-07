@@ -37,12 +37,12 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("User already exists");
     }
 
-    const verificationToken = uuidv4();
+    const verificationToken = uuidv4(); // Generate a verification token using uuidv4
     const user = await User.create({
         name,
         email,
         password,
-        verificationToken,
+        verificationToken, // Save the verification token in the user record
     });
 
     const verificationLink = `http://localhost:3000/verify/${verificationToken}`;
@@ -148,8 +148,13 @@ const resetPassword = asyncHandler(async (req, res) => {
             .json({ error: "Invalid or expired token for password reset" });
     }
 
+    // Hash the new password and save it to the user record
+    // const salt = await bcrypt.genSalt(10);
+    // user.password = await bcrypt.hash(password, salt);
+
     user.password = password;
-    
+
+    // Clear the reset password fields
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
 
