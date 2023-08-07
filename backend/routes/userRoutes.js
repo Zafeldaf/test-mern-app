@@ -35,10 +35,10 @@ router.route("/comments").get(protect, getComments);
 
 router.route("/upload").post(protect, uploadPhoto);
 
-router.route("/verify/:token").get(protect, verifyUser);
+router.route("/verify/:token").get(verifyUser);
 
-router.route("/forgot-password").post(protect, forgotPassword);
+router.route("/forgot-password").post(forgotPassword);
 
-router.route("/reset-password/:token").get(protect, resetPassword);
+router.route("/reset-password/:token").get(resetPassword);
 
 export default router;

@@ -9,23 +9,7 @@ const generateToken = (res, userId) => {
         httpOnly: true,
         secure: process.env.NODE_ENV !== "development",
         sameSite: "strict",
-        maxAge: 60 * 1000,
-    });
-
-    const refreshToken = jwt.sign(
-        { userId },
-        process.env.REFRESH_TOKEN_SECRET,
-        {
-            expiresIn: "2d",
-        },
-    );
-
-    res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        sameSite: "strict",
-        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days in milliseconds
+        maxAge: 30 * 24 * 60 * 60 * 1000,
     });
 };
-
 export default generateToken;
