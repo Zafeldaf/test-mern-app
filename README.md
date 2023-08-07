@@ -14,7 +14,7 @@ This project contains (but is not limited to):
 
 ## Usage
 
-Create a MongoDB database and obtain your MongoDB URI - MongoDB Atlas
+Create a MongoDB database and obtain your MongoDB URI - [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 
 ### Env Variables
 
