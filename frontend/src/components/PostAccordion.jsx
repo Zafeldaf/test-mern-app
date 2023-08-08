@@ -17,6 +17,7 @@ import {
     Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { ApiInstance } from "../axiosConfig.js";
 
 const PostsAccordion = ({ post, user, comments }) => {
     const [expanded, setExpanded] = useState(false);
@@ -24,7 +25,7 @@ const PostsAccordion = ({ post, user, comments }) => {
 
     const fetchComments = () => {
         setIsLoading(true);
-        axios.get(`/api/comments`).then((response) => {
+        ApiInstance.get(`/api/comments`).then((response) => {
             const postComments = response.data.filter(
                 (comment) => comment.postId === post.id,
             );

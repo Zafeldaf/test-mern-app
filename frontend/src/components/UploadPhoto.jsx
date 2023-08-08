@@ -3,6 +3,7 @@ import FormContainer from "./FormContainer.jsx";
 import { Button, Form } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { ApiInstance } from "../axiosConfig.js";
 
 const UploadPhoto = () => {
     const [file, setFile] = useState(null);
@@ -18,7 +19,7 @@ const UploadPhoto = () => {
                 const formData = new FormData();
 
                 // Append form data to the formData object
-                formData.append("file", file);
+
                 formData.append(
                     "title",
                     document.getElementById("title").value,
@@ -28,7 +29,7 @@ const UploadPhoto = () => {
                     document.getElementById("albumId").value,
                 );
 
-                await fetch("/api/upload", {
+                await ApiInstance("/api/upload", {
                     method: "POST",
                     body: formData,
                 });

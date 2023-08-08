@@ -1,22 +1,22 @@
-import DataTable from "./DataTable"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import DataTable from "./DataTable";
+import { useEffect, useState } from "react";
+import { ApiInstance } from "../axiosConfig.js";
 
 function getFullAddress(params) {
-    const { address } = params.row
-    return `${address.street}, ${address.suite}, ${address.city}, ${address.zipcode}`
+    const { address } = params.row;
+    return `${address.street}, ${address.suite}, ${address.city}, ${address.zipcode}`;
 }
 
 function getFullCompanyName(params) {
-    const { company } = params.row
-    return `${company.name}, ${company.catchPhrase}, ${company.bs}`
+    const { company } = params.row;
+    return `${company.name}, ${company.catchPhrase}, ${company.bs}`;
 }
 
 const UserTable = ({ handleSelectionModelChange, selectedRowsIds }) => {
-    const [dataUsers, setDataUsers] = useState([])
+    const [dataUsers, setDataUsers] = useState([]);
     const columns = [
         // { field: "id", headerName: "ID", width: 15, editable: false }, // Use the 'id' field instead of '_id'
-        { field: "name", headerName: "Name", width: 160, editable: true },
+        { field: "name", headerName: "Name", width: 170, editable: true },
         {
             field: "username",
             headerName: "Username",
@@ -40,14 +40,15 @@ const UserTable = ({ handleSelectionModelChange, selectedRowsIds }) => {
             width: 150,
             editable: true,
         },
-    ]
+    ];
 
     useEffect(() => {
-        axios
-            .get("/api/datausers")
+        ApiInstance.get("/datausers")
             .then((response) => setDataUsers(response.data))
-            .catch((error) => console.error("Error fetching datausers:", error))
-    }, [])
+            .catch((error) =>
+                console.error("Error fetching datausers:", error),
+            );
+    }, []);
 
     return (
         <>
@@ -58,7 +59,7 @@ const UserTable = ({ handleSelectionModelChange, selectedRowsIds }) => {
                 onSelectionModelChange={handleSelectionModelChange}
             />
         </>
-    )
-}
+    );
+};
 
-export default UserTable
+export default UserTable;

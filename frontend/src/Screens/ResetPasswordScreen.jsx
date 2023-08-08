@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { ApiInstance } from "../axiosConfig.js";
 
 const ResetPasswordScreen = () => {
     const { token } = useParams();
@@ -18,9 +18,12 @@ const ResetPasswordScreen = () => {
         }
 
         try {
-            const response = await axios.post(`/api/reset-password/${token}`, {
-                password,
-            });
+            const response = await ApiInstance.post(
+                `/api/reset-password/${token}`,
+                {
+                    password,
+                },
+            );
             setMessage(response.data.message);
             // Optionally, you can redirect the user to the login screen after successful password reset
             navigate("/login");

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import axios from "axios";
 import FormContainer from "./FormContainer.jsx";
 import { Link } from "react-router-dom";
+import { ApiInstance } from "../axiosConfig.js";
 
 const CreatePost = () => {
     const [formData, setFormData] = useState({
@@ -19,8 +19,7 @@ const CreatePost = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios
-            .post("/api/posts", formData)
+        ApiInstance.post("/api/posts", formData)
             .then((response) => {
                 // Handle success if needed
                 console.log("Post created:", response.data);

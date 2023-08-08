@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import FormContainer from "../components/FormContainer.jsx";
+import { ApiInstance } from "../axiosConfig.js";
 
 const ForgotPasswordScreen = () => {
     const [email, setEmail] = useState("");
@@ -9,7 +9,7 @@ const ForgotPasswordScreen = () => {
 
     const handleForgotPassword = async () => {
         try {
-            await axios.post("/api/forgot-password", { email });
+            await ApiInstance.post("/api/forgot-password", { email });
             setMessage(
                 "Password reset email sent successfully. Please check your email.",
             );

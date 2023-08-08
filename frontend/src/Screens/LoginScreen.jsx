@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import FormContainer from "../components/FormContainer";
 import { useLoginMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
-import { toast } from "react-toastify";
 import Loader from "../components/Loader";
+import { toast } from "react-toastify";
 
 const LoginScreen = () => {
     const [email, setEmail] = useState("");
@@ -29,16 +29,17 @@ const LoginScreen = () => {
         e.preventDefault();
         try {
             const res = await login({ email, password }).unwrap();
+
+            const { accessToken, refreshToken } = res; // Assuming your response structure contains these fields
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+
             dispatch(setCredentials({ ...res }));
             navigate("/");
         } catch (err) {
             toast.error("Wrong Email or Password");
             console.log(err?.data?.message || err.error);
         }
-    };
-
-    const handleForgotPassword = () => {
-        navigate("/forgot-password");
     };
 
     return (

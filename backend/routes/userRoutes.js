@@ -1,6 +1,7 @@
 import express from "express";
 import {
     authUser,
+    exchangeRefreshToken,
     forgotPassword,
     getUserProfile,
     logoutUser,
@@ -30,20 +31,22 @@ router
     .get(protect, getUserProfile)
     .put(protect, updateUserProfile);
 
-router.get("/datausers", getDataUsers);
-router.post("/datausers", createUser);
-router.delete("/datausers/:id", deleteUser);
+router.get("/datausers", protect, getDataUsers);
+router.post("/datausers", protect, createUser);
+router.delete("/datausers/:id", protect, deleteUser);
 
-router.get("/posts", getPosts);
-router.post("/posts", createPost);
-router.get("/datausers", getDataUsers);
-router.get("/comments", getComments);
+router.get("/posts", protect, getPosts);
+router.post("/posts", protect, createPost);
+router.get("/datausers", protect, getDataUsers);
+router.get("/comments", protect, getComments);
 
-router.post("/upload", uploadPhoto);
+router.post("/upload", protect, uploadPhoto);
 
 router.get("/verify/:token", verifyUser);
 
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
+
+router.post("/refresh-token", exchangeRefreshToken);
 
 export default router;

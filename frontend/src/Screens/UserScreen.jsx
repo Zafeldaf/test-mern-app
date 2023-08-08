@@ -1,9 +1,9 @@
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import UserTable from "../components/UserTable";
 import "../app.css";
+import { ApiInstance } from "../axiosConfig.js";
 
 const UserScreen = () => {
     const [selectedRowsIds, setSelectedRowsIds] = useState([]);
@@ -16,7 +16,7 @@ const UserScreen = () => {
         (async () => {
             const responses = await Promise.all(
                 selectedRowsIds.map((id) =>
-                    axios.delete(`/api/datausers/${id}`),
+                    ApiInstance.delete(`/api/datausers/${id}`),
                 ),
             );
             toast.success("Deleted Successfully");

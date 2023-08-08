@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { ApiInstance } from "../axiosConfig.js";
 
 const CreateUser = () => {
     const [formData, setFormData] = useState({
@@ -47,8 +47,7 @@ const CreateUser = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(formData); // Check if the form data is captured correctly
-        axios
-            .post("/api/datausers", formData)
+        ApiInstance.post("/api/datausers", formData)
             .then((response) => {
                 console.log("User created:", response.data);
                 // Do something after successful creation

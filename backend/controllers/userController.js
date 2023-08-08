@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 import { v4 as uuidv4 } from "uuid";
 import sendEmail from "../services/ses.js";
+import jwt from "jsonwebtoken";
 
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
@@ -19,11 +20,14 @@ const authUser = asyncHandler(async (req, res) => {
         throw new Error("Email not verified. Please verify your email first");
     }
 
-    generateToken(res, user._id);
+    const { accessToken, refreshToken } = generateToken(user._id);
+
     res.status(200).json({
         _id: user._id,
         name: user.name,
         email: user.email,
+        accessToken,
+        refreshToken,
     });
 });
 
@@ -148,7 +152,6 @@ const resetPassword = asyncHandler(async (req, res) => {
             .json({ error: "Invalid or expired token for password reset" });
     }
 
-    // Hash the new password and save it to the user record
     // const salt = await bcrypt.genSalt(10);
     // user.password = await bcrypt.hash(password, salt);
 
@@ -206,6 +209,44 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 });
 
+const exchangeRefreshToken = asyncHandler(async (req, res) => {
+    const refreshToken = req.body.refreshToken;
+
+    try {
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.JWT_REFRESH_SECRET,
+        );
+
+        const user = await User.findById(decoded.userId);
+        if (!user) {
+            res.status(401).json({ error: "User not found" });
+            return;
+        }
+
+        const newAccessToken = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1m",
+            },
+        );
+
+        const newRefreshToken = jwt.sign(
+            { userId: user._id },
+            process.env.JWT_REFRESH_SECRET,
+            { expiresIn: "2d" },
+        );
+
+        res.status(200).json({
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+        });
+    } catch (error) {
+        res.status(401).json({ error: "Invalid refresh token" });
+    }
+});
+
 export {
     authUser,
     registerUser,
@@ -215,4 +256,5 @@ export {
     logoutUser,
     getUserProfile,
     updateUserProfile,
+    exchangeRefreshToken,
 };
