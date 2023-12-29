@@ -6,7 +6,7 @@ This project contains (but is not limited to):
 - Routes for auth, logout, register, profile, update profile
 - JWT authentication stored in HTTP-only cookie
 - Protected routes and endpoints
-- Custom middleware to check JSON web token and store in cookie
+- Custom middleware to check JSON web token and store it in cookie
 - Custom error middleware
 - React frontend to register, login, logout, view profile, and update profile
 - React Bootstrap UI library
